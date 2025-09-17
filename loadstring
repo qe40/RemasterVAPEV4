@@ -1,1 +1,1 @@
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/qe40/RemasterVAPEV4/main/VapeV4RemasterMAIN.lua", true))()
