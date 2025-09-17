@@ -14,7 +14,7 @@ local tweenService = cloneref(game:GetService('TweenService'))
 local gameCamera = workspace.CurrentCamera
 local lplr = playersService.LocalPlayer
 
-local vape = shared.vape
+local vape = shared.NewVape
 local entitylib = vape.Libraries.entity
 local targetinfo = vape.Libraries.targetinfo
 local prediction = vape.Libraries.prediction
@@ -364,7 +364,7 @@ run(function()
 					particles.Texture = ParticleTexture.Value
 					particles.Transparency = NumberSequence.new(0, 1)
 					particles.Lifetime = NumberRange.new(0.4)
-					particles.Rate = 1000
+					particles.Rate = 999.5
 					particles.Speed = NumberRange.new(12)
 					particles.Drag = 6
 					particles.Shape = Enum.ParticleEmitterShape.Sphere
