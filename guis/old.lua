@@ -59,25 +59,25 @@ local uipallet = {
 }
 
 local getcustomassets = {
-	['newvape/assets/old/barlogo.png'] = 'rbxasset://barlogo.png',
-	['newvape/assets/old/blatanticon.png'] = 'rbxasset://blatanticon.png',
-	['newvape/assets/old/checkbox.png'] = 'rbxasset://checkbox.png',
-	['newvape/assets/old/combaticon.png'] = 'rbxasset://combaticon.png',
-	['newvape/assets/old/friendsicon.png'] = 'rbxasset://friendsicon.png',
-	['newvape/assets/old/guiicon.png'] = 'rbxasset://guiicon.png',
-	['newvape/assets/old/info.png'] = 'rbxasset://info.png',
-	['newvape/assets/old/pin.png'] = 'rbxasset://pin.png',
-	['newvape/assets/old/profilesicon.png'] = 'rbxasset://profilesicon.png',
-	['newvape/assets/old/rendericon.png'] = 'rbxasset://rendericon.png',
-	['newvape/assets/old/search.png'] = 'rbxasset://search.png',
-	['newvape/assets/old/settingsicon.png'] = 'rbxasset://settingsicon.png',
-	['newvape/assets/old/targetinfoicon.png'] = 'rbxasset://targetinfoicon.png',
-	['newvape/assets/old/textguiicon.png'] = 'rbxasset://textguiicon.png',
-	['newvape/assets/old/textv4.png'] = 'rbxasset://textv4.png',
-	['newvape/assets/old/textvape.png'] = 'rbxasset://textvape.png',
-	['newvape/assets/old/utilityicon.png'] = 'rbxasset://utilityicon.png',
-	['newvape/assets/old/vape.png'] = 'rbxassetid://14373395239',
-	['newvape/assets/old/worldicon.png'] = 'rbxasset://worldicon.png'
+	['ReVape/assets/old/barlogo.png'] = 'rbxasset://barlogo.png',
+	['ReVape/assets/old/blatanticon.png'] = 'rbxasset://blatanticon.png',
+	['ReVape/assets/old/checkbox.png'] = 'rbxasset://checkbox.png',
+	['ReVape/assets/old/combaticon.png'] = 'rbxasset://combaticon.png',
+	['ReVape/assets/old/friendsicon.png'] = 'rbxasset://friendsicon.png',
+	['ReVape/assets/old/guiicon.png'] = 'rbxasset://guiicon.png',
+	['ReVape/assets/old/info.png'] = 'rbxasset://info.png',
+	['ReVape/assets/old/pin.png'] = 'rbxasset://pin.png',
+	['ReVape/assets/old/profilesicon.png'] = 'rbxasset://profilesicon.png',
+	['ReVape/assets/old/rendericon.png'] = 'rbxasset://rendericon.png',
+	['ReVape/assets/old/search.png'] = 'rbxasset://search.png',
+	['ReVape/assets/old/settingsicon.png'] = 'rbxasset://settingsicon.png',
+	['ReVape/assets/old/targetinfoicon.png'] = 'rbxasset://targetinfoicon.png',
+	['ReVape/assets/old/textguiicon.png'] = 'rbxasset://textguiicon.png',
+	['ReVape/assets/old/textv4.png'] = 'rbxasset://textv4.png',
+	['ReVape/assets/old/textvape.png'] = 'rbxasset://textvape.png',
+	['ReVape/assets/old/utilityicon.png'] = 'rbxasset://utilityicon.png',
+	['ReVape/assets/old/vape.png'] = 'rbxassetid://14373395239',
+	['ReVape/assets/old/worldicon.png'] = 'rbxasset://worldicon.png'
 }
 
 local isfile = isfile or function(file)
@@ -221,13 +221,13 @@ local function downloadFile(path, func)
 	if not isfile(path) then
 		createDownloader(path)
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('newvape/profiles/commit.txt')..'/'..select(1, path:gsub('newvape/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res
 		end
 		writefile(path, res)
 	end
