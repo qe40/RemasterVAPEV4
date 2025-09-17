@@ -6,13 +6,19 @@ a remaster of vape v4
 
 
 # ANY TROUBLE OF LOADING THE SCRIPT PLEASE DO THIS
+
+
 CLOSE ROBLOX FIRST!!
+
 
 go to your executor then workspace
 
+
 DELETE "ReVape" folder
 
+
 AND THEN RECONNECT THE SCRIPT!
+
 
 -# any troubles still please contant me on discord 'soryed'
 
