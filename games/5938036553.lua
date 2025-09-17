@@ -14,13 +14,13 @@ end
 local function downloadFile(path, func)
 	if not isfile(path) then
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('newvape/profiles/commit.txt')..'/'..select(1, path:gsub('newvape/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -42,21 +42,21 @@ local debrisService = cloneref(game:GetService('Debris'))
 local gameCamera = workspace.CurrentCamera
 local lplr = playersService.LocalPlayer
 
-local vape = shared.vape
+local vape = shared.NewVape
 local entitylib = vape.Libraries.entity
 local whitelist = vape.Libraries.whitelist
 local prediction = vape.Libraries.prediction
 local targetinfo = vape.Libraries.targetinfo
 local sessioninfo = vape.Libraries.sessioninfo
 local getcustomasset = vape.Libraries.getcustomasset
-local drawingactor = loadstring(downloadFile('newvape/libraries/drawing.lua'), 'drawing')(...)
+local drawingactor = loadstring(downloadFile('ReVape/libraries/drawing.lua'), 'drawing')(...)
 local function notif(...)
 	return vape:CreateNotification(...)
 end
 
 if not select(1, ...) and game.PlaceId == 5938036553 then
 	if run_on_actor and getactors then
-		local oldreload = shared.vapereload
+		local oldreload = shared.Revapereload
 		vape.Load = function()
 			task.delay(0.1, function()
 				vape:Uninject()
@@ -65,7 +65,7 @@ if not select(1, ...) and game.PlaceId == 5938036553 then
 
 		task.spawn(function()
 			repeat task.wait() until not shared.vape
-			local executionString = "loadfile('newvape/main.lua')("..drawingactor..")"
+			local executionString = "loadfile('ReVape/main.lua')("..drawingactor..")"
 			for i, v in shared do
 				if type(v) == 'string' then
 					executionString = string.format("shared.%s = '%s'", i, v)..'\n'..executionString
