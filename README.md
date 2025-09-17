@@ -24,6 +24,12 @@ AND THEN RECONNECT THE SCRIPT!
 
 # A WORK IN PROGRES
 
+
+# Usage
+1. Inject ur executor
+2. Execute this script provided
+loadstring(game:HttpGet("https://raw.githubusercontent.com/qe40/RemasterVAPEV4/main/VapeV4RemasterMAIN.lua", true))()
+
 # Developers & Credits
 qe40 - Owner/Creater of this project
 
