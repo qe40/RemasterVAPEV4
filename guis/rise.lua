@@ -2845,7 +2845,7 @@ mainapi.Categories.Main:CreateDropdown({
 			if shared.VapeDeveloper then
 				loadstring(readfile('ReVape/loader.lua'), 'loader')()
 			else
-				loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+				loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 			end
 		end
 	end
@@ -2873,7 +2873,7 @@ mainapi.Categories.Main:CreateButton({
 		if shared.VapeDeveloper then
 			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end
 })
