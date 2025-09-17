@@ -1,6 +1,7 @@
 # RemasterVAPEV4
-a remaster of vape v4 ORIG TO https://github.com/7GrandDadPGN/VapeV4ForRoblox/tree/main ! CREDITS TO 7GRANDDAD
+a remaster of vape v4
 
+# A WORK IN PROGRES
 
 # Developers & Credits
 qe40 - Owner/Creater of this project
