@@ -2,6 +2,7 @@ local vape = shared.NewVape
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
+		print("NIGGA GOT A ERROR STUPID CUNT LOOL")
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
 	end
 	return res
