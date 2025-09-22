@@ -132,14 +132,14 @@ end)
 	
 run(function()
 	local old
-	
+	local Studs
 	vape.Categories.Combat:CreateModule({
 		Name = 'Reach',
 		Function = function(callback)
 			if callback then
 				old = rawget(bd.CombatConstants, 'REACH_IN_STUDS')
-				rawset(bd.CombatConstants, 'REACH_IN_STUDS', 18)
-				rawset(bd.Entity.LocalEntity, 'Reach', 18)
+				rawset(bd.CombatConstants, 'REACH_IN_STUDS', Studs)
+				rawset(bd.Entity.LocalEntity, 'Reach', Studs)
 			else
 				rawset(bd.CombatConstants, 'REACH_IN_STUDS', old)
 				rawset(bd.Entity.LocalEntity, 'Reach', old)
@@ -147,6 +147,13 @@ run(function()
 			end
 		end,
 		Tooltip = 'Extends attack reach'
+	})
+	Studs = Velocity:CreateSlider({
+		Name = 'Studs',
+		Min = 5,
+		Max = 20,
+		Default = 18,
+		Suffix = '%'
 	})
 end)
 	
@@ -418,7 +425,7 @@ run(function()
 		Name = 'Swing range',
 		Min = 1,
 		Max = 16,
-		Default = 16,
+		Default = 25,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -427,7 +434,7 @@ run(function()
 		Name = 'Attack range',
 		Min = 1,
 		Max = 16,
-		Default = 16,
+		Default =  ,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -441,8 +448,8 @@ run(function()
 	Max = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
-		Max = 10,
-		Default = 10
+		Max = 5,
+		Default = 5
 	})
 	Mouse = Killaura:CreateToggle({Name = 'Require mouse down'})
 	Swing = Killaura:CreateToggle({Name = 'No Swing'})
@@ -1098,7 +1105,7 @@ run(function()
 	end
 	
 	Breaker = vape.Categories.Minigames:CreateModule({
-		Name = 'Breaker',
+		Name = 'Nuker',
 		Function = function(callback)
 			if callback then
 				local breakBlock
@@ -1149,7 +1156,7 @@ run(function()
 	Range = Breaker:CreateSlider({
 		Name = 'Break range',
 		Min = 1,
-		Max = 5,
+		Max = 18,
 		Default = 5,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
