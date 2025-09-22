@@ -74,7 +74,7 @@ if not select(1, ...) and game.PlaceId == 5938036553 then
 				end
 			end
 			if oldreload then
-				executionString = 'shared.vapereload = true\n'..executionString
+				executionString = 'shared.Revapereload = true\n'..executionString
 			end
 
 			for i, v in getactors() do
@@ -801,7 +801,7 @@ run(function()
 				until not GrenadeTP.Enabled
 			end
 		end,
-		Tooltip = 'Teleports throwables near enemy players'
+		Tooltip = 'Teleports throwables near enemy players\npatched'
 	})
 	Range = GrenadeTP:CreateSlider({
 		Name = 'Range',
@@ -861,7 +861,7 @@ run(function()
 				until not GunModifications.Enabled
 			end
 		end,
-		Tooltip = 'Modifications to empower the firearm'
+		Tooltip = 'Modifications to empower the firearm\npatched'
 	})
 	Reload = GunModifications:CreateToggle({Name = 'Auto Reload'})
 	Recoil = GunModifications:CreateToggle({Name = 'No Recoil'})
