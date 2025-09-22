@@ -20,7 +20,7 @@ local mainapi = {
 	Scale = {Value = 1},
 	ToggleNotifications = {},
 	ThreadFix = setthreadidentity and true or false,
-	Version = '4.04',
+	Version = '0.1',
 	Windows = {}
 }
 
@@ -3362,9 +3362,9 @@ function mainapi:Uninject()
 	mainapi.gui:Destroy()
 	table.clear(mainapi.Libraries)
 	loopClean(mainapi)
-	shared.vape = nil
-	shared.vapereload = nil
-	shared.VapeIndependent = nil
+	shared.NewVape = nil
+	shared.Revapereload = nil
+	shared.ReVapeIndependent = nil
 end
 
 gui = Instance.new('ScreenGui')
@@ -3725,8 +3725,8 @@ topbar:CreateDropdown({
 	Function = function(val, mouse)
 		if mouse then
 			writefile('ReVape/profiles/gui.txt', val)
-			shared.vapereload = true
-			if shared.VapeDeveloper then
+			shared.Revapereload = true
+			if shared.ReVapeDeveloper then
 				loadstring(readfile('ReVape/loader.lua'), 'loader')()
 			else
 				loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
@@ -3763,8 +3763,8 @@ topbar:CreateButton({
 		if isfile('ReVape/profiles/'..mainapi.Profile..mainapi.Place..'.txt') and delfile then
 			delfile('ReVape/profiles/'..mainapi.Profile..mainapi.Place..'.txt')
 		end
-		shared.vapereload = true
-		if shared.VapeDeveloper then
+		shared.Revapereload = true
+		if shared.ReVapeDeveloper then
 			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
 			loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
@@ -3827,8 +3827,8 @@ topbar:CreateButton({
 topbar:CreateButton({
 	Name = 'REINEJCT',
 	Function = function()
-		shared.vapereload = true
-		if shared.VapeDeveloper then
+		shared.Revapereload = true
+		if shared.ReVapeDeveloper then
 			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
 			loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
