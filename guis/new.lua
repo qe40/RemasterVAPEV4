@@ -5640,8 +5640,8 @@ function mainapi:Uninject()
 	mainapi.gui:Destroy()
 	table.clear(mainapi.Libraries)
 	loopClean(mainapi)
-	ReVape.vape = nil
-	ReVape.vapereload = nil
+	shared.NewVape = nil
+	shared.Revapereload = nil
 	shared.ReVapeIndependent = nil
 end
 
