@@ -1,5 +1,5 @@
 local vape = shared.NewVape
-local ls = function(...)
+local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
@@ -21,7 +21,7 @@ local function downloadFile(path, func)
 			error(res) 
 		end
 		if path:find('.lua') then 
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res 
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res 
 		end
 		writefile(path, res)
 	end
@@ -30,14 +30,14 @@ end
 
 vape.Place = 6872274481
 if isfile('ReVape/games/'..vape.Place..'.lua') then
-	ls(readfile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
+	loadstring(readfile('ReVape/games/'..vape.Place..'.lua'), 'bedwars')()
 else
-	if not shared.ReVapeDeveloper then
+	if not shared.VapeDeveloper then
 		local suc, res = pcall(function() 
 			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			ls(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
+			loadstring(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'bedwars')()
 		end
 	end
 end
