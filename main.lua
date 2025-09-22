@@ -105,7 +105,7 @@ if not shared.ReVapeIndependent then
 				return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..game.PlaceId..'.lua', true)
 			end)
 			if suc and res ~= '404: Not Found' then
-				loadstring(downloadFile('newvape/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
+				loadstring(downloadFile('ReVape/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
 			end
 		end
 	end
