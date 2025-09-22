@@ -154,7 +154,7 @@ run(function()
 				until not InfiniteStamina.Enabled
 			end
 		end,
-		Tooltip = 'Tiredless simulator'
+		Tooltip = 'Endless sprinting lol!'
 	})
 end)
 	
@@ -262,8 +262,8 @@ run(function()
 	Range = Killaura:CreateSlider({
 		Name = 'Attack range',
 		Min = 1,
-		Max = 15,
-		Default = 15,
+		Max = 20,
+		Default = 20,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
@@ -277,8 +277,8 @@ run(function()
 	Max = Killaura:CreateSlider({
 		Name = 'Max targets',
 		Min = 1,
-		Max = 10,
-		Default = 10
+		Max = 5,
+		Default = 5
 	})
 	Mouse = Killaura:CreateToggle({Name = 'Require mouse down'})
 	Killaura:CreateToggle({
@@ -514,7 +514,7 @@ run(function()
 	})
 	WallCheck = Speed:CreateToggle({
 		Name = 'Wall Check',
-		Default = true
+		Default = false
 	})
 end)
 	
@@ -745,7 +745,7 @@ run(function()
 	end
 	
 	Breaker = vape.Categories.Minigames:CreateModule({
-		Name = 'Breaker',
+		Name = 'Nuker',
 		Function = function(callback)
 			if callback then
 				local oldhp = -1
@@ -802,11 +802,11 @@ run(function()
 				clean()
 			end
 		end,
-		Tooltip = 'Break resources around you automatically'
+		Tooltip = 'Break resources/bed around you automatically'
 	})
 	BreakerDisable = Breaker:CreateToggle({
 		Name = 'Break while attacking',
-		Default = true
+		Default = false
 	})
 end)
 	
