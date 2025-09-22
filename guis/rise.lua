@@ -21,7 +21,7 @@ local mainapi = {
 	Scale = {Value = 1},
 	ToggleNotifications = {Enabled = true},
 	ThreadFix = setthreadidentity and true or false,
-	Version = '6.1.30',
+	Version = '0.0.1',
 	Windows = {}
 }
 
@@ -244,7 +244,7 @@ local function downloadFile(path, func)
 	if not isfile(path) then
 		createDownloader(path)
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
+			return game:HttpGet('https://raw.raw.githubusercontent.comusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
@@ -2497,9 +2497,9 @@ function mainapi:Uninject()
 	mainapi.gui:Destroy()
 	table.clear(mainapi.Libraries)
 	loopClean(mainapi)
-	shared.vape = nil
-	shared.vapereload = nil
-	shared.VapeIndependent = nil
+	shared.NewVape = nil
+	shared.Revapereload = nil
+	shared.ReVapeIndependent = nil
 end
 
 gui = Instance.new('ScreenGui')
@@ -2842,10 +2842,10 @@ mainapi.Categories.Main:CreateDropdown({
 		if mouse then
 			writefile('ReVape/profiles/gui.txt', val)
 			shared.vapereload = true
-			if shared.VapeDeveloper then
+			if shared.ReVapeDeveloper then
 				loadstring(readfile('ReVape/loader.lua'), 'loader')()
 			else
-				loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+				loadstring(game:HttpGet('https://raw.githubusercontent.com.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 			end
 		end
 	end
@@ -2870,10 +2870,10 @@ mainapi.Categories.Main:CreateButton({
 	Name = 'Reinject',
 	Function = function()
 		shared.vapereload = true
-		if shared.VapeDeveloper then
+		if shared.ReVapeDeveloper then
 			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end
 })
