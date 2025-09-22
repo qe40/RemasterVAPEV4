@@ -1271,7 +1271,7 @@ run(function()
 		Name = 'Max angle',
 		Min = 1,
 		Max = 360,
-		Default = 70
+		Default = 180
 	})
 	ClickAim = AimAssist:CreateToggle({
 		Name = 'Click Aim',
@@ -7267,7 +7267,7 @@ run(function()
 	end
 	
 	Breaker = vape.Categories.Minigames:CreateModule({
-		Name = 'Breaker',
+		Name = 'Nuker',
 		Function = function(callback)
 			if callback then
 				for _ = 1, 30 do
@@ -7325,7 +7325,7 @@ run(function()
 	Range = Breaker:CreateSlider({
 		Name = 'Break range',
 		Min = 1,
-		Max = 30,
+		Max = 45,
 		Default = 30,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -7342,7 +7342,7 @@ run(function()
 	UpdateRate = Breaker:CreateSlider({
 		Name = 'Update rate',
 		Min = 1,
-		Max = 120,
+		Max = 240,
 		Default = 60,
 		Suffix = 'hz'
 	})
@@ -7364,11 +7364,11 @@ run(function()
 	})
 	LuckyBlock = Breaker:CreateToggle({
 		Name = 'Break Lucky Block',
-		Default = true
+		Default = false
 	})
 	IronOre = Breaker:CreateToggle({
 		Name = 'Break Iron Ore',
-		Default = true
+		Default = false
 	})
 	Effect = Breaker:CreateToggle({
 		Name = 'Show Healthbar & Effects',
@@ -7384,9 +7384,9 @@ run(function()
 		Default = true,
 		Darker = true
 	})
-	Animation = Breaker:CreateToggle({Name = 'Animation'})
-	SelfBreak = Breaker:CreateToggle({Name = 'Self Break'})
-	InstantBreak = Breaker:CreateToggle({Name = 'Instant Break'})
+	Animation = Breaker:CreateToggle({Name = 'Animation',Tooltip = 'Shows animation'})
+	SelfBreak = Breaker:CreateToggle({Name = 'Self Break',Tooltip = 'Self breaks the object'})
+	InstantBreak = Breaker:CreateToggle({Name = 'Instant Break',Tooltip = 'Instantly breaks the object'})
 	LimitItem = Breaker:CreateToggle({
 		Name = 'Limit to items',
 		Tooltip = 'Only breaks when tools are held'
@@ -8491,3 +8491,605 @@ run(function()
 	})
 end)
 	
+
+run(function()	
+	NM = vape.Categories.Minigames:({
+		Name = 'Nightmare Emote',
+		Tooltip = 'Client-Sided nightmare emote, animation is Server-Side visuals are Client-Sided',
+		Function = function(callback)
+			if callback then
+				local l__GameQueryUtil__8
+				if (not shared.CheatEngineMode) then 
+					l__GameQueryUtil__8 = require(game:GetService("ReplicatedStorage")['rbxts_include']['node_modules']['@easy-games']['game-core'].out).GameQueryUtil 
+				else
+					local backup = {}; function backup:setQueryIgnored() end; l__GameQueryUtil__8 = backup;
+				end
+				local l__TweenService__9 = game:GetService("TweenService")
+				local player = game:GetService("Players").LocalPlayer
+				local p6 = player.Character
+				
+				if not p6 then NM:Toggle() return end
+				
+				local v10 = game:GetService("ReplicatedStorage"):WaitForChild("Assets"):WaitForChild("Effects"):WaitForChild("NightmareEmote"):Clone();
+				asset = v10
+				v10.Parent = game.Workspace
+				lastPosition = p6.PrimaryPart and p6.PrimaryPart.Position or Vector3.new()
+				
+				task.spawn(function()
+					while asset ~= nil do
+						local currentPosition = p6.PrimaryPart and p6.PrimaryPart.Position
+						if currentPosition and (currentPosition - lastPosition).Magnitude > 0.1 then
+							asset:Destroy()
+							asset = nil
+							NM:Toggle()
+							break
+						end
+						lastPosition = currentPosition
+						v10:SetPrimaryPartCFrame(p6.LowerTorso.CFrame + Vector3.new(0, -2, 0));
+						task.wait()
+					end
+				end)
+				
+				local v11 = v10:GetDescendants();
+				local function v12(p8)
+					if p8:IsA("BasePart") then
+						l__GameQueryUtil__8:setQueryIgnored(p8, true);
+						p8.CanCollide = false;
+						p8.Anchored = true;
+					end;
+				end;
+				for v13, v14 in ipairs(v11) do
+					v12(v14, v13 - 1, v11);
+				end;
+				local l__Outer__15 = v10:FindFirstChild("Outer");
+				if l__Outer__15 then
+					l__TweenService__9:Create(l__Outer__15, TweenInfo.new(1.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, -1), {
+						Orientation = l__Outer__15.Orientation + Vector3.new(0, 360, 0)
+					}):Play();
+				end;
+				local l__Middle__16 = v10:FindFirstChild("Middle");
+				if l__Middle__16 then
+					l__TweenService__9:Create(l__Middle__16, TweenInfo.new(12.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, -1), {
+						Orientation = l__Middle__16.Orientation + Vector3.new(0, -360, 0)
+					}):Play();
+				end;
+                anim = Instance.new("Animation")
+				anim.AnimationId = "rbxassetid://126296757482145"
+				anim = p6.Humanoid:LoadAnimation(anim)
+				anim:Play()
+			else 
+                if anim then 
+					anim:Stop()
+					anim = nil
+				end
+				if asset then
+					asset:Destroy() 
+					asset = nil
+				end
+			end
+		end
+	})
+end)
+
+
+run(function()
+    local ClientCrasher
+    local Method
+
+    ClientCrasher = vape.Categories.Minigames:CreateModule({
+        Name = 'Client Crasher',
+		Tooltip = 'Client crasher\nPATCHED',
+        Function = function(callback)
+            if callback then
+                for _, v in getconnections(game:GetService("ReplicatedStorage"):WaitForChild("events-@easy-games/game-core:shared/game-core-networking@getEvents.Events"):WaitForChild("abilityUsed").OnClientEvent) do
+                    v:Disconnect()    
+                end
+
+                ClientCrasher:Clean(collectionService:GetInstanceAddedSignal('inventory-entity'):Connect(function(player: Model)
+                    local item = player:WaitForChild('HandInvItem') :: IntValue?
+                    for i,v in getconnections(item.Changed) do
+                        v:Disable()
+                    end                
+                end))
+
+                repeat
+                    if entitylib.isAlive then
+                        if Method.Value == 'Ability' then
+                            for _ = 1, 25 do
+                                replicatedStorage['events-@easy-games/game-core:shared/game-core-networking@getEvents.Events'].useAbility:FireServer('oasis_swap_staff')
+                            end
+                            task.wait(0.1)
+                        elseif Method.Value == 'Item' then
+                            for _, tool in store.inventory.inventory.items do
+                                task.spawn(switchItem, tool.tool, 0, true)
+                            end
+                        end
+                    end
+                    task.wait()
+                until not ClientCrasher.Toggle
+            end
+        end
+    })
+
+    Method = ClientCrasher:CreateDropdown({
+        Name = 'Method',
+        List = {'Item', 'Ability'}
+    })
+end) 			
+
+
+run(function()
+				local collectionService = game:GetService("CollectionService")
+				local debris = game:GetService("Debris")
+				local Icons = {
+				    ["iron"] = "rbxassetid://6850537969",
+				    ["bee"] = "rbxassetid://7343272839",
+				    ["natures_essence_1"] = "rbxassetid://88021177593377",
+				    ["thorns"] = "rbxassetid://9134549615",
+				    ["mushrooms"] = "rbxassetid://9134534696",
+				    ["wild_flower"] = "rbxassetid://9134545166",
+				    ["crit_star"] = "rbxassetid://9866757805",
+				    ["vitality_star"] = "rbxassetid://9866757969",
+				    ["sheep"] = "rbxassetid://78493823174512",
+				    ["crystal"] = "rbxassetid://94842987168294",
+				    ["Ghost"] = "rbxassetid://78249785309968",
+				}
+				local espobjs = {}
+				local espfold = Instance.new("Folder")
+				local gui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
+				gui.ResetOnSpawn = false
+				espfold.Parent = gui
+				
+				local hidden = false
+								
+				local function espadd(v, icon)
+				    local billboard = Instance.new("BillboardGui")
+				    billboard.Parent = espfold
+				    billboard.Name = "iron"
+				    billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 1.5)
+				    billboard.Size = UDim2.new(0, 32, 0, 32)
+				    billboard.AlwaysOnTop = true
+				    billboard.Adornee = v
+				    local image = Instance.new("ImageLabel")
+				    image.BackgroundTransparency = 0.5
+				    image.BorderSizePixel = 0
+				    image.Image = Icons[icon] or ""
+				    image.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+				    image.Size = UDim2.new(0, 32, 0, 32)
+				    image.AnchorPoint = Vector2.new(0.5, 0.5)
+				    image.Parent = billboard
+				    local uicorner = Instance.new("UICorner")
+				    uicorner.CornerRadius = UDim.new(0, 4)
+				    uicorner.Parent = image
+				    espobjs[v] = billboard
+				end
+				
+				local connections = {}
+				
+				local function reset()
+				    for _, v in pairs(connections) do
+				        pcall(function() v:Disconnect() end)
+				    end
+				    espfold:ClearAllChildren()
+				    table.clear(espobjs)
+				end
+				
+				local function addKit(tag, icon, custom)
+				    if not custom then
+				        local con1 = collectionService:GetInstanceAddedSignal(tag):Connect(function(v)
+				            espadd(v.PrimaryPart, icon)
+				        end)
+				        local con2 = collectionService:GetInstanceRemovedSignal(tag):Connect(function(v)
+				            if espobjs[v.PrimaryPart] then
+				                espobjs[v.PrimaryPart]:Destroy()
+				                espobjs[v.PrimaryPart] = nil
+				            end
+				        end)
+				        table.insert(connections, con1)
+				        table.insert(connections, con2)
+				        for _, v in pairs(collectionService:GetTagged(tag)) do
+				            espadd(v.PrimaryPart, icon)
+				        end
+				    else
+				        local function check(v)
+				            if v.Name == tag and v.ClassName == "Model" then
+				                espadd(v.PrimaryPart, icon)
+				            end
+				        end
+				        game.Workspace.ChildAdded:Connect(check)
+				        game.Workspace.ChildRemoved:Connect(function(v)
+				            pcall(function()
+				                if espobjs[v.PrimaryPart] then
+				                    espobjs[v.PrimaryPart]:Destroy()
+				                    espobjs[v.PrimaryPart] = nil
+				                end
+				            end)
+				        end)
+				        for _, v in pairs(game.Workspace:GetChildren()) do
+				            check(v)
+				        end
+				    end
+				end
+				
+				local function recreateESP()
+				    reset()
+				    addKit("hidden-metal", "iron")
+				    addKit("bee", "bee")
+				    addKit("treeOrb", "natures_essence_1")
+				    
+				    addKit("Thorns", "thorns", true)
+				    addKit("Mushrooms", "mushrooms", true)
+				    addKit("Flower", "wild_flower", true)
+				    addKit("CritStar", "crit_star", true)
+					addKit("VitalityStar", "vitality_star", true)
+					addKit("alchemy_crystal", "crystal")															
+					addKit("SheepModel", "sheep")															
+					addKit("ghost", "Ghost")															
+				end
+	KitESP = vape.Categories.Minigames:({
+		Name = 'Kit Esp',
+		Tooltip = 'Specific kits are needed for this module "Metal, Eldertree, Beekeeper Beatrix, Gompy, Alchemist, Star Collector Stella, Death Adder, Sheep Herder"',
+		Function = function(callback)
+			if callback then
+
+				
+				recreateESP()
+			else 
+                reset()
+			end
+		end
+	})
+end)
+
+run(function()
+	local PlayerLevelSet = {}
+	local PlayerLevel = {Value = 1000}
+	PlayerLevelSet = vape.Categories.Minigames:({
+		Name = 'SetPlayerLevel',
+		ToolTip = 'Sets your player level to 1000 (client sided)',
+		Function = function(calling)
+			if calling then 
+				game.Players.LocalPlayer:SetAttribute("PlayerLevel", PlayerLevel.Value)
+			end
+		end
+	})
+	PlayerLevel = PlayerLevelSet.CreateSlider({
+		Name = 'Sets your desired player level',
+		Function = function() if PlayerLevelSet.Enabled then game.Players.LocalPlayer:SetAttribute("PlayerLevel", PlayerLevel.Value) end end,
+		Min = 1,
+		Max = 1000,
+		Default = 1000
+	})
+end)
+
+run(function()
+	local GetHost = {Enabled = false}
+	GetHost = vape.Categories.Minigames:({
+		Name = "GetHost",
+		Tooltip = "this module is only for show. None of the settings will work.",
+		Function = function(callback) 
+			if callback then
+				task.spawn(function()
+					game.Players.LocalPlayer:SetAttribute("CustomMatchRole", "host")
+				end)
+			end
+		end
+	})
+end)
+
+--[[run(function()
+		local KnitInit, Knit
+		repeat
+			KnitInit, Knit = pcall(function()
+				return debug.getupvalue(require(game:GetService("Players").LocalPlayer.PlayerScripts.TS.knit).setup, 9)
+			end)
+			if KnitInit then break end
+			task.wait()
+		until KnitInit
+
+		if not debug.getupvalue(Knit.Start, 1) then
+			repeat task.wait() until debug.getupvalue(Knit.Start, 1)
+		end
+
+		local Players = game:GetService("Players")
+
+		shared.PERMISSION_CONTROLLER_HASANYPERMISSIONS_REVERT = shared.PERMISSION_CONTROLLER_HASANYPERMISSIONS_REVERT or Knit.Controllers.PermissionController.hasAnyPermissions
+		shared.MATCH_CONTROLLER_GETPLAYERPARTY_REVERT = shared.MATCH_CONTROLLER_GETPLAYERPARTY_REVERT or Knit.Controllers.MatchController.getPlayerParty
+
+		local AC_MOD_View = {
+			playerConnections = {},
+			Enabled = false,
+			Friends = {}, 
+			parties = {}, 
+			teamMap = {}, 
+			display = {},
+			isRefreshing = false,
+			cacheDirty = true,
+			disable_disguises = false,
+			disguises = {},
+			teamData = {}
+		}
+
+		AC_MOD_View.controller = Knit.Controllers.PermissionController
+		AC_MOD_View.match_controller = Knit.Controllers.MatchController
+
+		function AC_MOD_View:getPartyById(displayId)
+			if not displayId then return end
+			displayId = tostring(displayId)
+			if self.display[displayId] then return self.display[displayId] end
+			for _, party in pairs(self.parties) do
+				if party.displayId == tostring(displayId) then
+					self.display[displayId] = party
+					return party
+				end
+			end
+		end
+
+		function AC_MOD_View:refreshDisplayCache()
+			for _, plr in pairs(Players:GetPlayers()) do
+				local playerId = tostring(plr.UserId)
+
+				local playerPartyId = self.teamMap[playerId]
+				if playerPartyId ~= nil then
+					self:getPartyById(playerPartyId)
+				end
+				task.wait()
+			end
+		end
+
+		function AC_MOD_View:refreshDisplayCacheAsync()
+			task.spawn(self.refreshDisplayCache, self)
+		end
+
+		function AC_MOD_View:getPlayerTeamData(plr)
+			if self.teamData[plr] then return self.teamData[plr] end
+
+			self.teamData[plr] = {}
+
+			local teamMembers = {}
+			local playerTeam = plr.Team 
+			if not playerTeam then
+				return teamMembers 
+			end
+
+			local playerId = tostring(plr.UserId)
+			self.Friends[playerId] = self.Friends[playerId] or {}
+
+			for _, otherPlayer in pairs(Players:GetPlayers()) do
+				if otherPlayer == plr then continue end 
+
+				local otherPlayerId = tostring(otherPlayer.UserId)
+				local areFriends = self.Friends[playerId][otherPlayerId]
+
+				if areFriends == nil then
+					local suc, res = pcall(function()
+						return plr:IsFriendsWith(otherPlayer.UserId)
+					end)
+					areFriends = suc and res or false
+
+					if suc then
+						self.Friends = self.Friends or {}
+						self.Friends[playerId] = self.Friends[playerId] or {}
+						self.Friends[playerId][otherPlayerId] = areFriends
+						self.Friends[otherPlayerId] = self.Friends[otherPlayerId] or {}
+						self.Friends[otherPlayerId][playerId] = areFriends
+					end
+				end
+
+				if areFriends and otherPlayer.Team == playerTeam then
+					table.insert(teamMembers, otherPlayerId)
+				end
+			end
+
+			self.teamData[plr] = teamMembers
+
+			return teamMembers
+		end
+
+		function AC_MOD_View:refreshPlayerTeamData()
+			for i,v in pairs(Players:GetPlayers()) do
+				self:getPlayerTeamData(v)
+				task.wait()
+			end
+		end
+
+		function AC_MOD_View:refreshPlayerTeamDataAsync()
+			task.spawn(self.refreshPlayerTeamData, self)
+		end
+
+		function AC_MOD_View:refreshTeamMap()
+			local allTeams = {}
+			for _, p in pairs(Players:GetPlayers()) do
+				local teamMembers = self:getPlayerTeamData(p)
+				if teamMembers and #teamMembers > 0 then 
+					allTeams[p] = teamMembers
+				end
+			end
+
+			local validTeams = {}
+			for playerInTeams, members in pairs(allTeams) do
+				local playerIdInTeams = tostring(playerInTeams.UserId)
+				local cleanedMembers = {}
+
+				for _, memberId in pairs(members) do
+					local memberIdStr = tostring(memberId)
+					if memberIdStr == playerIdInTeams then
+						print("Warning: Player " .. playerIdInTeams .. " has themselves in their team list.")
+					else
+						table.insert(cleanedMembers, memberIdStr)
+					end
+				end
+
+				if #cleanedMembers > 0 then
+					validTeams[playerInTeams] = cleanedMembers
+				end
+			end
+
+			self.parties = {}
+			self.teamMap = {}
+			local teamId = 0
+			for playerInTeams, members in pairs(validTeams) do
+				local playerIdInTeams = tostring(playerInTeams.UserId)
+				if not self.teamMap[playerIdInTeams] then
+					self.teamMap[playerIdInTeams] = teamId
+					table.insert(self.parties, {
+						displayId = tostring(teamId),
+						members = members
+					})
+					teamId = teamId + 1
+
+					for _, memberId in pairs(members) do
+						self.teamMap[memberId] = teamId - 1
+					end
+				end
+			end
+
+			self.cacheDirty = false
+			self.isRefreshing = false
+		end
+
+		function AC_MOD_View:refreshTeamMapAsync()
+			if self.isRefreshing then return end 
+			self.isRefreshing = true
+			task.spawn(function()
+				self:refreshTeamMap()
+			end)
+		end
+
+		function AC_MOD_View:getPlayerParty(plr)
+			if not plr or not plr:IsA("Player") then
+				return nil
+			end
+
+			local playerId = tostring(plr.UserId)
+
+			if self.cacheDirty or not next(self.teamMap) then
+				self:refreshTeamMapAsync()
+			end
+
+			local playerPartyId = self.teamMap[playerId]
+			if playerPartyId ~= nil then
+				return self:getPartyById(playerPartyId)
+			end
+
+			return nil 
+		end
+
+		AC_MOD_View.mockGetPlayerParty = function(self, plr)
+			local parties = self.parties 
+			if parties ~= nil and #parties > 0 then
+				return shared.MATCH_CONTROLLER_GETPLAYERPARTY_REVERT(self, plr)
+			end
+			return AC_MOD_View:getPlayerParty(plr)
+		end
+
+		function AC_MOD_View:toggleDisableDisguises()
+			if not self.Enabled then return end
+			if self.disable_disguises then
+				for _,v in pairs(Players:GetPlayers()) do
+					if v == Players.LocalPlayer then continue end
+					if tostring(v:GetAttribute("Disguised")) == "true" then
+						v:SetAttribute("Disguised", false)
+						--InfoNotification("Remove Disguises", "Disabled streamer mode for "..tostring(v.Name).."!", 3)
+						table.insert(self.disguises, v)
+					end
+				end
+			else
+				for i,v in pairs(self.disguises) do
+					if tostring(v:GetAttribute("Disguised")) ~= "true" then
+						v:SetAttribute("Disguised", true)
+						--InfoNotification("Remove Disguises", "Re - enabled Streamer mode for "..tostring(v.Name).."!", 2)
+					end
+				end
+				table.clear(self.disguises)
+			end
+		end
+
+		function AC_MOD_View:refreshCore()
+			self:refreshTeamMapAsync()
+			self:refreshDisplayCacheAsync()
+			self:refreshPlayerTeamDataAsync()
+
+			self:toggleDisableDisguises()
+		end
+
+		function AC_MOD_View:refreshCoreAsync()
+			task.spawn(self.refreshCore, self)
+		end
+
+		function AC_MOD_View:init()
+			self.Enabled = true
+			self.controller.hasAnyPermissions = function(self)
+				return true
+			end
+			self.match_controller.getPlayerParty = self.mockGetPlayerParty
+
+			self.playerConnections = {
+				added = Players.PlayerAdded:Connect(function(player)
+					self.cacheDirty = true
+					self:refreshCoreAsync()
+					player:GetPropertyChangedSignal("Team"):Connect(function()
+						self.cacheDirty = true
+						self:refreshCoreAsync()
+					end)
+				end),
+				removed = Players.PlayerRemoving:Connect(function(player)
+					local playerId = tostring(player.UserId)
+					self.Friends[playerId] = nil 
+					for _, cache in pairs(self.Friends) do
+						cache[playerId] = nil
+					end
+					self.cacheDirty = true
+					self:refreshCoreAsync()
+				end)
+			}
+
+			self:refreshCore()
+		end
+
+		function AC_MOD_View:disable()
+			self.Enabled = false
+
+			self.controller.hasAnyPermissions = shared.PERMISSION_CONTROLLER_HASANYPERMISSIONS_REVERT
+			self.match_controller.getPlayerParty = shared.MATCH_CONTROLLER_GETPLAYERPARTY_REVERT
+
+			if self.playerConnections then
+				for _, v in pairs(self.playerConnections) do
+					pcall(function() v:Disconnect() end)
+				end
+				table.clear(self.playerConnections)
+			end
+
+			self.parties = {}
+			self.teamMap = {}
+			self.Friends = {}
+			self.display = {}
+			self.teamData = {}
+			self.cacheDirty = true
+
+			self:toggleDisableDisguises()
+		end
+
+		shared.ACMODVIEWENABLED = false
+		AC_MOD_View.moduleInstance = vape.Categories.Minigames:({
+			Name = "AC MOD View",
+			Tooltip = "Client-Sided Anti-Cheat View nothing will work",
+			Function = function(call)
+				shared.ACMODVIEWENABLED = call
+				if call then
+					AC_MOD_View:init()
+				else
+					AC_MOD_View:disable()
+				end
+			end
+		})
+
+		AC_MOD_View.disableDisguisesToggle = AC_MOD_View.moduleInstance.CreateToggle({
+			Name = "Remove Disguises",
+			Function = function(call)
+				AC_MOD_View.disable_disguises = call
+				AC_MOD_View:toggleDisableDisguises()
+			end,
+			Default = true
+		})
+	end)--]]
