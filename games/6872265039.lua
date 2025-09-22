@@ -10,7 +10,7 @@ local vape = shared.NewVape
 local entitylib = vape.Libraries.entity
 local sessioninfo = vape.Libraries.sessioninfo
 local bedwars = {}
-
+print("VapeSharedTable",vape,"Entity",entitylib,"Session",sessioninfo)
 local function notif(...)
 	return vape:CreateNotification(...)
 end
