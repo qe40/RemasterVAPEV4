@@ -19,7 +19,7 @@ local mainapi = {
 	Scale = {Value = 1},
 	ThreadFix = setthreadidentity and true or false,
 	ToggleNotifications = {},
-	Version = '4.18',
+	Version = '0.1',
 	Windows = {}
 }
 
@@ -314,13 +314,13 @@ local function downloadFile(path, func)
 	if not isfile(path) then
 		createDownloader(path)
 		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/qe40/VapeV4ForRoblox/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
+			return game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true)
 		end)
 		if not suc or res == '404: Not Found' then
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -2847,7 +2847,7 @@ function mainapi:CreateGUI()
 			toggle.Size = UDim2.new(1, 0, 0, 40)
 			toggle.BackgroundTransparency = 1
 			toggle.AutoButtonColor = false
-			toggle.Text = .rep(' ', 33 * scale.Scale)..togglesettings.Name
+			toggle.Text = string.rep(' ', 33 * scale.Scale)..togglesettings.Name
 			toggle.TextXAlignment = Enum.TextXAlignment.Left
 			toggle.TextColor3 = color.Dark(uipallet.Text, 0.16)
 			toggle.TextSize = 14
@@ -2891,7 +2891,7 @@ function mainapi:CreateGUI()
 			end
 
 			scale:GetPropertyChangedSignal('Scale'):Connect(function()
-				toggle.Text = .rep(' ', 33 * scale.Scale)..togglesettings.Name
+				toggle.Text = string.rep(' ', 33 * scale.Scale)..togglesettings.Name
 			end)
 			toggle.MouseEnter:Connect(function()
 				hovered = true
@@ -3082,7 +3082,7 @@ function mainapi:CreateGUI()
 			window.Size = UDim2.fromOffset(220, 45 + windowlist.AbsoluteContentSize.Y / scale.Scale)
 			for _, v in categoryapi.Buttons do
 				if v.Icon then
-					v.Object.Text = .rep(' ', 33 * scale.Scale)..v.Name
+					v.Object.Text = string.rep(' ', 33 * scale.Scale)..v.Name
 				end
 			end
 		end)
@@ -3611,7 +3611,7 @@ function mainapi:CreateGUI()
 		window.Size = UDim2.fromOffset(220, 42 + windowlist.AbsoluteContentSize.Y / scale.Scale)
 		for _, v in categoryapi.Buttons do
 			if v.Icon then
-				v.Object.Text = .rep(' ', 36 * scale.Scale)..v.Name
+				v.Object.Text = string.rep(' ', 36 * scale.Scale)..v.Name
 			end
 		end
 	end)
@@ -5640,13 +5640,13 @@ function mainapi:Uninject()
 	mainapi.gui:Destroy()
 	table.clear(mainapi.Libraries)
 	loopClean(mainapi)
-	shared.vape = nil
-	shared.vapereload = nil
-	shared.VapeIndependent = nil
+	ReVape.vape = nil
+	ReVape.vapereload = nil
+	shared.ReVapeIndependent = nil
 end
 
 gui = Instance.new('ScreenGui')
-gui.Name = random()
+gui.Name = randomString()
 gui.DisplayOrder = 9999999
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 gui.IgnoreGuiInset = true
@@ -5907,11 +5907,11 @@ general:CreateButton({
 		if isfile('ReVape/profiles/'..mainapi.Profile..mainapi.Place..'.txt') and delfile then
 			delfile('ReVape/profiles/'..mainapi.Profile..mainapi.Place..'.txt')
 		end
-		shared.vapereload = true
-		if shared.VapeDeveloper then
-			load(readfile('ReVape/loader.lua'), 'loader')()
+		shared.Revapereload = true
+		if shared.ReVapeDeveloper then
+			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
-			load(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
 	Tooltip = 'This will set your profile to the default settings of Vape'
@@ -5926,11 +5926,11 @@ general:CreateButton({
 general:CreateButton({
 	Name = 'Reinject',
 	Function = function()
-		shared.vapereload = true
-		if shared.VapeDeveloper then
-			load(readfile('ReVape/loader.lua'), 'loader')()
+		shared.Revapereload = true
+		if shared.ReVapeDeveloper then
+			loadstring(readfile('ReVape/loader.lua'), 'loader')()
 		else
-			loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 		end
 	end,
 	Tooltip = 'Reloads vape for debugging purposes'
@@ -6034,11 +6034,11 @@ guipane:CreateDropdown({
 	Function = function(val, mouse)
 		if mouse then
 			writefile('ReVape/profiles/gui.txt', val)
-			shared.vapereload = true
-			if shared.VapeDeveloper then
+			shared.Revapereload = true
+			if shared.ReVapeDeveloper then
 				loadstring(readfile('ReVape/loader.lua'), 'loader')()
 			else
-				loadstring(game:HttpGet('https://github.com/qe40/RemasterVAPEV4'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
+				loadstring(game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/loader.lua', true))()
 			end
 		end
 	end,
