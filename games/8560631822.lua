@@ -1,7 +1,6 @@
-local old_loadstring = loadstring 
 local vape = shared.NewVape
 local loadstring = function(...)
-	local res, err = old_loadstring(...)
+	local res, err = loadstring(...)
 	if err and vape then 
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
 	end
