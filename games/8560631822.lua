@@ -1,5 +1,5 @@
 local vape = shared.NewVape
-local loadstring = function(...)
+local ls = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
@@ -30,14 +30,14 @@ end
 
 vape.Place = 6872274481
 if isfile('ReVape/games/'..vape.Place..'.lua') then
-	loadstring(readfile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
+	ls(readfile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
 else
 	if not shared.ReVapeDeveloper then
 		local suc, res = pcall(function() 
 			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
+			ls(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'ReVape - bedwars')()
 		end
 	end
 end
