@@ -14,21 +14,17 @@ local isfile = isfile or function(file)
 end
 local function downloadFile(path, func)
 	if not isfile(path) then
-		print("path isnt in file")
 		local suc, res = pcall(function() 
 			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true) 
 		end)
 		if not suc or res == '404: Not Found' then 
-			print("error 404: not founded")
 			error(res) 
 		end
 		if path:find('.lua') then 
 			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res 
 		end
-		print("worth the file path and the res")
 		writefile(path, res)
 	end
-	print("founded path in file and returned function(or readfile) and path")
 	return (func or readfile)(path)
 end
 
