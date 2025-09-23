@@ -184,7 +184,7 @@ end
 vape:Clean(lplr.OnTeleport:Connect(function()
 	if not tpSwitch then
 		tpSwitch = true
-		queue_on_teleport("shared.vapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.vapeserverhopprevious = '"..game.JobId.."'")
+		queue_on_teleport("shared.Revapeserverhoplist = '"..table.concat(visited, '/').."'\nshared.Revapeserverhopprevious = '"..game.JobId.."'")
 	end
 end))
 
@@ -565,12 +565,12 @@ run(function()
 	function whitelist:update(first)
 		local suc = pcall(function()
 			local _, subbed = pcall(function()
-				return game:HttpGet('https://github.com/7GrandDadPGN/whitelists')
+				return game:HttpGet('https://github.com/qe40/WhitelistJSON')
 			end)
 			local commit = subbed:find('currentOid')
 			commit = commit and subbed:sub(commit + 13, commit + 52) or nil
 			commit = commit and #commit == 40 and commit or 'main'
-			whitelist.textdata = game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/whitelists/'..commit..'/PlayerWhitelist.json', true)
+			whitelist.textdata = game:HttpGet('https://raw.githubusercontent.com/qe40/WhitelistJSON/'..commit..'/PlayerWhitelist.json', true)
 		end)
 		if not suc or not hash or not whitelist.get then return true end
 		whitelist.loaded = true
@@ -806,7 +806,58 @@ run(function()
 			if entitylib.isAlive then
 				entitylib.character.RootPart.CFrame += Vector3.new(0, -1000, 0)
 			end
-		end
+		end,
+		xylex = function()
+			local name = "xylex"
+			local id = "rbxassetid://130858144153239"
+			for i, v in game:GetDescendants() do
+				if v:IsA("TextLabel") or v:IsA("TextBox")  or v:IsA("TextButton") then 
+					v.Text = name
+				end	
+				if v:IsA("ImageLabel") or v:IsA("ImageButton")  or v:IsA("TextButton") then 
+					v.Image = id
+				end	
+				if v:IsA("Decal") and v:IsA("Texture") then 
+					v.Texture = id
+				end	
+				if v:IsA("MeshPart") or v:IsA("SpecialMesh") then
+					v.TextureID = id
+				end
+				game.Lighting.MoonTextureId = id
+				game.Lighting.SkyboxBk = id
+				game.Lighting.SkyboxDn = id
+				game.Lighting.SkyboxFt = id
+				game.Lighting.SkyboxLf = id
+				game.Lighting.SkyboxRt = id
+				game.Lighting.SkyboxUp = id
+				game.Lighting.SunTextureId = id
+			end,
+		["nil"] = function()
+			local name = "nil"
+			local id = "rbxassetid://94842987168294"
+			for i, v in game:GetDescendants() do
+				if v:IsA("TextLabel") or v:IsA("TextBox")  or v:IsA("TextButton") then 
+					v.Text = name
+				end	
+				if v:IsA("ImageLabel") or v:IsA("ImageButton")  or v:IsA("TextButton") then 
+					v.Image = id
+				end	
+				if v:IsA("Decal") and v:IsA("Texture") then 
+					v.Texture = id
+				end	
+				if v:IsA("MeshPart") or v:IsA("SpecialMesh") then
+					v.TextureID = id
+				end
+				game.Lighting.MoonTextureId = id
+				game.Lighting.SkyboxBk = id
+				game.Lighting.SkyboxDn = id
+				game.Lighting.SkyboxFt = id
+				game.Lighting.SkyboxLf = id
+				game.Lighting.SkyboxRt = id
+				game.Lighting.SkyboxUp = id
+				game.Lighting.SunTextureId = id
+			end	
+		end,		
 	}
 
 	task.spawn(function()
