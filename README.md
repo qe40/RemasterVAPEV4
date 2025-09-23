@@ -2,7 +2,7 @@
 a remaster of vape v4
 
 # Contants
-@soryed on discord
+@ye40 on discord
 
 
 # ANY TROUBLE OF LOADING THE SCRIPT PLEASE DO THIS
@@ -20,7 +20,7 @@ DELETE "ReVape" folder
 AND THEN RECONNECT THE SCRIPT!
 
 
--# any troubles still please contant me on discord 'soryed'
+-# any troubles still please contant me on discord 'ye40'
 
 # A WORK IN PROGRES
 
