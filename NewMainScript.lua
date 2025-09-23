@@ -55,5 +55,5 @@ if not shared.ReVapeDeveloper then
 	end
 	writefile('ReVape/profiles/commit.txt', commit)
 end
-
+print("this nigga lMAO")
 return loadstring(downloadFile('ReVape/main.lua'), 'main')()
