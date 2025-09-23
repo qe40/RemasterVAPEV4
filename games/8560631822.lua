@@ -3,6 +3,7 @@ local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
+		print("LOADSTRING FUNCTION FAILED TO LOAD : "..err)
 	end
 	return res
 end
@@ -19,6 +20,8 @@ local function downloadFile(path, func)
 		end)
 		if not suc or res == '404: Not Found' then 
 			error(res) 
+			print("DOWNLOAD FILE FUNCTION FAILED TO LOAD : "..err)
+
 		end
 		if path:find('.lua') then 
 			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res 
