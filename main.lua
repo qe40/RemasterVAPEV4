@@ -97,6 +97,7 @@ shared.NewVape = NewVape
 
 if not shared.ReVapeIndependent then
 	loadstring(downloadFile('ReVape/games/universal.lua'), 'universal')()
+	print("downloaded univerisal")
 	if isfile('ReVape/games/'..game.PlaceId..'.lua') then
 		loadstring(readfile('ReVape/games/'..game.PlaceId..'.lua'), tostring(game.PlaceId))(...)
 		print("found gameplaceid")
@@ -119,3 +120,6 @@ else
 	NewVape.Init = finishLoading
 	return NewVape
 end
+
+
+print("Sup lil nigga")
