@@ -1,12 +1,11 @@
 local vape = shared.NewVape
-local Place = 6872274481
---[[local loadstring = function(...)
+local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then 
 		vape:CreateNotification('Vape', 'Failed to load : '..err, 30, 'alert') 
 	end
 	return res
-end--]]
+end
 local isfile = isfile or function(file)
 	local suc, res = pcall(function() 
 		return readfile(file) 
@@ -15,17 +14,21 @@ local isfile = isfile or function(file)
 end
 local function downloadFile(path, func)
 	if not isfile(path) then
+		print("path isnt in file")
 		local suc, res = pcall(function() 
 			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/'..select(1, path:gsub('ReVape/', '')), true) 
 		end)
 		if not suc or res == '404: Not Found' then 
+			print("error 404: not founded")
 			error(res) 
 		end
 		if path:find('.lua') then 
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res 
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res 
 		end
+		print("worth the file path and the res")
 		writefile(path, res)
 	end
+	print("founded path in file and returned function(or readfile) and path")
 	return (func or readfile)(path)
 end
 
@@ -35,10 +38,10 @@ if isfile('ReVape/games/'..vape.Place..'.lua') then
 else
 	if not shared.VapeDeveloper then
 		local suc, res = pcall(function() 
-			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..Place..'.lua', true) 
+			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true) 
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('ReVape/games/'..Place..'.lua'), 'bedwars')()
+			loadstring(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'bedwars')()
 		end
 	end
 end
