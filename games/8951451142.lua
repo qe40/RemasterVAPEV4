@@ -21,7 +21,7 @@ local function downloadFile(path, func)
 			error(res)
 		end
 		if path:find('.lua') then
-			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape remaster updates.\n'..res
+			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
 		end
 		writefile(path, res)
 	end
@@ -37,4 +37,7 @@ else
 			return game:HttpGet('https://raw.githubusercontent.com/qe40/RemasterVAPEV4/'..readfile('ReVape/profiles/commit.txt')..'/games/'..vape.Place..'.lua', true)
 		end)
 		if suc and res ~= '404: Not Found' then
-			loadstring(downloadFile('ReVape/game
+			loadstring(downloadFile('ReVape/games/'..vape.Place..'.lua'), 'skywars')()
+		end
+	end
+end
