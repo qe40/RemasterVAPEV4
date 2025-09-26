@@ -77,7 +77,7 @@ local getcustomassets = {
 	['ReVape/assets/new/colorpreview.png'] = 'rbxassetid://14368311578',
 	['ReVape/assets/new/combaticon.png'] = 'rbxassetid://14368312652',
 	['ReVape/assets/new/customsettings.png'] = 'rbxassetid://14403726449',
-	['ReVape/assets/new/discord.png'] = 'rbxassetid://14403726449',
+	['ReVape/assets/new/discord.png'] = '',
 	['ReVape/assets/new/dots.png'] = 'rbxassetid://14368314459',
 	['ReVape/assets/new/edit.png'] = 'rbxassetid://14368315443',
 	['ReVape/assets/new/expandicon.png'] = 'rbxassetid://14368353032',
@@ -328,7 +328,6 @@ local function downloadFile(path, func)
 end
 
 getcustomasset = not inputService.TouchEnabled and assetfunction and function(path)
-	print(path)
 	return downloadFile(path, assetfunction)
 end or function(path)
 	return getcustomassets[path] or ''
@@ -2528,6 +2527,7 @@ function mainapi:CreateGUI()
 	discordbutton.BackgroundTransparency = 1
 	discordbutton.Image = getcustomasset('ReVape/assets/new/discord.png')
 	discordbutton.Parent = window
+	discordbutton.Visible = false
 	addTooltip(discordbutton, 'Join discord')
 	local settingspane = Instance.new('TextButton')
 	settingspane.Size = UDim2.fromScale(1, 1)
@@ -5674,6 +5674,7 @@ local scarcitybanner = Instance.new('TextLabel')
 scarcitybanner.Size = UDim2.fromScale(1, 0.02)
 scarcitybanner.Position = UDim2.fromScale(0, 0.97)
 scarcitybanner.BackgroundTransparency = 1
+scarcitybanner.Visible = false
 scarcitybanner.Text = 'A new discord has been created, click the discord icon to join.'
 scarcitybanner.TextScaled = true
 scarcitybanner.TextColor3 = Color3.new(1, 1, 1)
