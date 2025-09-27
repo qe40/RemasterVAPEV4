@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -31,7 +32,7 @@ local gameCamera = workspace.CurrentCamera
 local lplr = playersService.LocalPlayer
 local assetfunction = getcustomasset
 
-local vape = shared.NewVape
+local vape = shared.vape
 local entitylib = vape.Libraries.entity
 local targetinfo = vape.Libraries.targetinfo
 local sessioninfo = vape.Libraries.sessioninfo
@@ -73,7 +74,7 @@ local function addBlur(parent)
 	blur.Size = UDim2.new(1, 89, 1, 52)
 	blur.Position = UDim2.fromOffset(-48, -31)
 	blur.BackgroundTransparency = 1
-	blur.Image = getcustomasset('ReVape/assets/new/blur.png')
+	blur.Image = getcustomasset('newvape/assets/new/blur.png')
 	blur.ScaleType = Enum.ScaleType.Slice
 	blur.SliceCenter = Rect.new(52, 31, 261, 502)
 	blur.Parent = parent
@@ -1271,7 +1272,7 @@ run(function()
 		Name = 'Max angle',
 		Min = 1,
 		Max = 360,
-		Default = 180
+		Default = 70
 	})
 	ClickAim = AimAssist:CreateToggle({
 		Name = 'Click Aim',
@@ -2223,13 +2224,13 @@ run(function()
 								local actualRoot = v.Character.PrimaryPart
 								if actualRoot then
 									local dir = CFrame.lookAt(selfpos, actualRoot.Position).LookVector
-									local pos = selfpos + dir * math.max(delta.Magnitude - 14.400, 0)
+									local pos = selfpos + dir * math.max(delta.Magnitude - 14.399, 0)
 									swingCooldown = tick()
 									bedwars.SwordController.lastAttack = workspace:GetServerTimeNow()
 									store.attackReach = (delta.Magnitude * 100) // 1 / 100
 									store.attackReachUpdate = tick() + 1
 
-									if delta.Magnitude < 13.3 and ChargeTime.Value > 0.10 then
+									if delta.Magnitude < 14.4 and ChargeTime.Value > 0.11 then
 										AnimDelay = tick()
 									end
 
@@ -3272,108 +3273,7 @@ run(function()
 		Tooltip = 'Displays your health in the center of your screen.'
 	})
 end)
-	
-run(function()
-	local KitESP
-	local Background
-	local Color = {}
-	local Reference = {}
-	local Folder = Instance.new('Folder')
-	Folder.Parent = vape.gui
-	
-	local ESPKits = {
-		alchemist = {'alchemist_ingedients', 'wild_flower'},
-		beekeeper = {'bee', 'bee'},
-		bigman = {'treeOrb', 'natures_essence_1'},
-		ghost_catcher = {'ghost', 'ghost_orb'},
-		metal_detector = {'hidden-metal', 'iron'},
-		sheep_herder = {'SheepModel', 'purple_hay_bale'},
-		sorcerer = {'alchemy_crystal', 'wild_flower'},
-		star_collector = {'stars', 'crit_star'}
-	}
-	
-	local function Added(v, icon)
-		local billboard = Instance.new('BillboardGui')
-		billboard.Parent = Folder
-		billboard.Name = icon
-		billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 0)
-		billboard.Size = UDim2.fromOffset(36, 36)
-		billboard.AlwaysOnTop = true
-		billboard.ClipsDescendants = false
-		billboard.Adornee = v
-		local blur = addBlur(billboard)
-		blur.Visible = Background.Enabled
-		local image = Instance.new('ImageLabel')
-		image.Size = UDim2.fromOffset(36, 36)
-		image.Position = UDim2.fromScale(0.5, 0.5)
-		image.AnchorPoint = Vector2.new(0.5, 0.5)
-		image.BackgroundColor3 = Color3.fromHSV(Color.Hue, Color.Sat, Color.Value)
-		image.BackgroundTransparency = 1 - (Background.Enabled and Color.Opacity or 0)
-		image.BorderSizePixel = 0
-		image.Image = bedwars.getIcon({itemType = icon}, true)
-		image.Parent = billboard
-		local uicorner = Instance.new('UICorner')
-		uicorner.CornerRadius = UDim.new(0, 4)
-		uicorner.Parent = image
-		Reference[v] = billboard
-	end
-	
-	local function addKit(tag, icon)
-		KitESP:Clean(collectionService:GetInstanceAddedSignal(tag):Connect(function(v)
-			Added(v.PrimaryPart, icon)
-		end))
-		KitESP:Clean(collectionService:GetInstanceRemovedSignal(tag):Connect(function(v)
-			if Reference[v.PrimaryPart] then
-				Reference[v.PrimaryPart]:Destroy()
-				Reference[v.PrimaryPart] = nil
-			end
-		end))
-		for _, v in collectionService:GetTagged(tag) do
-			Added(v.PrimaryPart, icon)
-		end
-	end
-	
-	KitESP = vape.Categories.Render:CreateModule({
-		Name = 'KitESP',
-		Function = function(callback)
-			if callback then
-				repeat task.wait() until store.equippedKit ~= '' or (not KitESP.Enabled)
-				local kit = KitESP.Enabled and ESPKits[store.equippedKit] or nil
-				if kit then
-					addKit(kit[1], kit[2])
-				end
-			else
-				Folder:ClearAllChildren()
-				table.clear(Reference)
-			end
-		end,
-		Tooltip = 'ESP for certain kit related objects'
-	})
-	Background = KitESP:CreateToggle({
-		Name = 'Background',
-		Function = function(callback)
-			if Color.Object then Color.Object.Visible = callback end
-			for _, v in Reference do
-				v.ImageLabel.BackgroundTransparency = 1 - (callback and Color.Opacity or 0)
-				v.Blur.Visible = callback
-			end
-		end,
-		Default = true
-	})
-	Color = KitESP:CreateColorSlider({
-		Name = 'Background Color',
-		DefaultValue = 0,
-		DefaultOpacity = 0.5,
-		Function = function(hue, sat, val, opacity)
-			for _, v in Reference do
-				v.ImageLabel.BackgroundColor3 = Color3.fromHSV(hue, sat, val)
-				v.ImageLabel.BackgroundTransparency = 1 - opacity
-			end
-		end,
-		Darker = true
-	})
-end)
-	
+
 run(function()
 	local NameTags
 	local Targets
@@ -6356,7 +6256,7 @@ run(function()
 		close.Position = UDim2.new(1, -35, 0, 9)
 		close.BackgroundColor3 = Color3.new(1, 1, 1)
 		close.BackgroundTransparency = 1
-		close.Image = getcustomasset('ReVape/assets/new/close.png')
+		close.Image = getcustomasset('newvape/assets/new/close.png')
 		close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 		close.ImageTransparency = 0.5
 		close.AutoButtonColor = false
@@ -6470,7 +6370,7 @@ run(function()
 		searchicon.Size = UDim2.fromOffset(14, 14)
 		searchicon.Position = UDim2.new(1, -26, 0, 8)
 		searchicon.BackgroundTransparency = 1
-		searchicon.Image = getcustomasset('ReVape/assets/new/search.png')
+		searchicon.Image = getcustomasset('newvape/assets/new/search.png')
 		searchicon.ImageColor3 = color.Light(uipallet.Main, 0.37)
 		searchicon.Parent = searchbkg
 		local children = Instance.new('ScrollingFrame')
@@ -6611,7 +6511,7 @@ run(function()
 		textbuttonicon.Position = UDim2.fromScale(0.5, 0.5)
 		textbuttonicon.AnchorPoint = Vector2.new(0.5, 0.5)
 		textbuttonicon.BackgroundTransparency = 1
-		textbuttonicon.Image = getcustomasset('ReVape/assets/new/add.png')
+		textbuttonicon.Image = getcustomasset('newvape/assets/new/add.png')
 		textbuttonicon.ImageColor3 = Color3.fromHSV(0.46, 0.96, 0.52)
 		textbuttonicon.Parent = textbutton
 		local childrenlist = Instance.new('Frame')
@@ -6704,7 +6604,7 @@ run(function()
 			close.Position = UDim2.new(1, -23, 0, 6)
 			close.BackgroundColor3 = Color3.new(1, 1, 1)
 			close.BackgroundTransparency = 1
-			close.Image = getcustomasset('ReVape/assets/new/closemini.png')
+			close.Image = getcustomasset('newvape/assets/new/closemini.png')
 			close.ImageColor3 = color.Light(uipallet.Text, 0.2)
 			close.ImageTransparency = 0.5
 			close.AutoButtonColor = false
@@ -7170,7 +7070,7 @@ run(function()
 						Size = UDim2.new(1, 89, 1, 52),
 						Position = UDim2.fromOffset(-48, -31),
 						BackgroundTransparency = 1,
-						Image = getcustomasset('ReVape/assets/new/blur.png'),
+						Image = getcustomasset('newvape/assets/new/blur.png'),
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(52, 31, 261, 502)
 					}),
@@ -7267,7 +7167,7 @@ run(function()
 	end
 	
 	Breaker = vape.Categories.Minigames:CreateModule({
-		Name = 'Nuker',
+		Name = 'Breaker',
 		Function = function(callback)
 			if callback then
 				for _ = 1, 30 do
@@ -7325,7 +7225,7 @@ run(function()
 	Range = Breaker:CreateSlider({
 		Name = 'Break range',
 		Min = 1,
-		Max = 45,
+		Max = 30,
 		Default = 30,
 		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
@@ -7342,7 +7242,7 @@ run(function()
 	UpdateRate = Breaker:CreateSlider({
 		Name = 'Update rate',
 		Min = 1,
-		Max = 240,
+		Max = 120,
 		Default = 60,
 		Suffix = 'hz'
 	})
@@ -7364,11 +7264,11 @@ run(function()
 	})
 	LuckyBlock = Breaker:CreateToggle({
 		Name = 'Break Lucky Block',
-		Default = false
+		Default = true
 	})
 	IronOre = Breaker:CreateToggle({
 		Name = 'Break Iron Ore',
-		Default = false
+		Default = true
 	})
 	Effect = Breaker:CreateToggle({
 		Name = 'Show Healthbar & Effects',
@@ -7384,9 +7284,9 @@ run(function()
 		Default = true,
 		Darker = true
 	})
-	Animation = Breaker:CreateToggle({Name = 'Animation',Tooltip = 'Shows animation'})
-	SelfBreak = Breaker:CreateToggle({Name = 'Self Break',Tooltip = 'Self breaks the object'})
-	InstantBreak = Breaker:CreateToggle({Name = 'Instant Break',Tooltip = 'Instantly breaks the object'})
+	Animation = Breaker:CreateToggle({Name = 'Animation'})
+	SelfBreak = Breaker:CreateToggle({Name = 'Self Break'})
+	InstantBreak = Breaker:CreateToggle({Name = 'Instant Break'})
 	LimitItem = Breaker:CreateToggle({
 		Name = 'Limit to items',
 		Tooltip = 'Only breaks when tools are held'
@@ -8490,25 +8390,19 @@ run(function()
 		List = WinEffectName
 	})
 end)
-	
 
 run(function()	
-	NM = vape.Categories.Minigames:({
+
+	NM = vape.Categories.Exploits:CreateModule({
 		Name = 'Nightmare Emote',
 		Tooltip = 'Client-Sided nightmare emote, animation is Server-Side visuals are Client-Sided',
 		Function = function(callback)
-			if callback then
-				local l__GameQueryUtil__8
-				if (not shared.CheatEngineMode) then 
-					l__GameQueryUtil__8 = require(game:GetService("ReplicatedStorage")['rbxts_include']['node_modules']['@easy-games']['game-core'].out).GameQueryUtil 
-				else
-					local backup = {}; function backup:setQueryIgnored() end; l__GameQueryUtil__8 = backup;
-				end
+			if callback then				
 				local l__TweenService__9 = game:GetService("TweenService")
 				local player = game:GetService("Players").LocalPlayer
 				local p6 = player.Character
 				
-				if not p6 then NM:Toggle() return end
+				if not p6 then return end
 				
 				local v10 = game:GetService("ReplicatedStorage"):WaitForChild("Assets"):WaitForChild("Effects"):WaitForChild("NightmareEmote"):Clone();
 				asset = v10
@@ -8533,7 +8427,6 @@ run(function()
 				local v11 = v10:GetDescendants();
 				local function v12(p8)
 					if p8:IsA("BasePart") then
-						l__GameQueryUtil__8:setQueryIgnored(p8, true);
 						p8.CanCollide = false;
 						p8.Anchored = true;
 					end;
@@ -8554,7 +8447,7 @@ run(function()
 					}):Play();
 				end;
                 anim = Instance.new("Animation")
-				anim.AnimationId = "rbxassetid://126296757482145"
+				anim.AnimationId = "rbxassetid://9191822700"
 				anim = p6.Humanoid:LoadAnimation(anim)
 				anim:Play()
 			else 
@@ -8573,12 +8466,190 @@ end)
 
 
 run(function()
+	local GetHost = {}
+	GetHost = vape.Categories.Exploits:CreateModule({
+		Name = "GetHost",
+		Tooltip = "this module is only for show. None of the settings will work.",
+		Function = function(callback) 
+			if callback then
+				task.spawn(function()
+					game.Players.LocalPlayer:SetAttribute("CustomMatchRole", "host")
+				end)
+			end	
+		end
+	})
+end)
+
+run(function()
+	GetExecutor = vape.Categories.Exploits:CreateModule({
+		Name = "GetExecutor",
+		Tooltip = "gets ur current exectuor(USED FOR DEBUGGING)",
+		Function = function(callback)
+			if callback then
+				task.spawn(function()
+				local timer = 4.5
+					vape:CreateNotification('Loading...', "Currently searching for your executor", timer)
+					if identifyexecutor then
+					task.wait(timer + 0.5)
+						vape:CreateNotification("Success", "Could find your executor '"..identifyexecutor().."'", 20)
+					else
+						vape:CreateNotification("Error", "Couldn't find your function 'identifyexecutor' for your executor", 5,"alert")
+					end
+				end)
+			end
+		end	
+	})
+end)
+
+
+run(function()
+	local collectionService = game:GetService("CollectionService")
+	local debris = game:GetService("Debris")
+	local Icons = {
+		["iron"] = "rbxassetid://6850537969",
+		["bee"] = "rbxassetid://7343272839",
+		["natures_essence_1"] = "rbxassetid://11003449842",
+		["thorns"] = "rbxassetid://9134549615",
+		["mushrooms"] = "rbxassetid://9134534696",
+		["wild_flower"] = "rbxassetid://9134545166",
+		["crit_star"] = "rbxassetid://9866757805",
+		["vitality_star"] = "rbxassetid://9866757969",
+		["sheep"] = "rbxassetid://78493823174512",
+		["crystal"] = "rbxassetid://94842987168294",
+		["Ghost"] = "rbxassetid://78249785309968",
+	}
+	local espobjs = {}
+	local espfold = Instance.new("Folder")
+	local gui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
+	gui.ResetOnSpawn = false
+	espfold.Parent = gui
+
+	local hidden = false
+
+	local function isKeybindValid(key)
+		return Enum.KeyCode[key] ~= nil
+	end
+
+	local function showNotification(message)
+		local notification = Instance.new("TextLabel")
+		notification.Size = UDim2.new(0, 300, 0, 50)
+		notification.Position = UDim2.new(0.5, -150, 0, 50)
+		notification.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+		notification.TextColor3 = Color3.new(1, 1, 1)
+		notification.Font = Enum.Font.SourceSansBold
+		notification.TextSize = 20
+		notification.Text = message
+		notification.AnchorPoint = Vector2.new(0.5, 0)
+		notification.Parent = gui
+
+		debris:AddItem(notification, 3)
+	end
+
+	local function espadd(v, icon)
+		local billboard = Instance.new("BillboardGui")
+		billboard.Parent = espfold
+		billboard.Name = "iron"
+		billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 1.5)
+		billboard.Size = UDim2.new(0, 32, 0, 32)
+		billboard.AlwaysOnTop = true
+		billboard.Adornee = v
+		local image = Instance.new("ImageLabel")
+		image.BackgroundTransparency = 0.5
+		image.BorderSizePixel = 0
+		image.Image = Icons[icon] or ""
+		image.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+		image.Size = UDim2.new(0, 32, 0, 32)
+		image.AnchorPoint = Vector2.new(0.5, 0.5)
+		image.Parent = billboard
+		local uicorner = Instance.new("UICorner")
+		uicorner.CornerRadius = UDim.new(0, 4)
+		uicorner.Parent = image
+		espobjs[v] = billboard
+	end
+
+	local connections = {}
+
+	local function reset()
+		for _, v in pairs(connections) do
+			pcall(function() v:Disconnect() end)
+		end
+		espfold:ClearAllChildren()
+		table.clear(espobjs)
+	end
+
+	local function addKit(tag, icon, custom)
+		if not custom then
+			local con1 = collectionService:GetInstanceAddedSignal(tag):Connect(function(v)
+				espadd(v.PrimaryPart, icon)
+			end)
+			local con2 = collectionService:GetInstanceRemovedSignal(tag):Connect(function(v)
+				if espobjs[v.PrimaryPart] then
+					espobjs[v.PrimaryPart]:Destroy()
+					espobjs[v.PrimaryPart] = nil
+				end
+			end)
+			table.insert(connections, con1)
+			table.insert(connections, con2)
+			for _, v in pairs(collectionService:GetTagged(tag)) do
+				espadd(v.PrimaryPart, icon)
+			end
+		else
+			local function check(v)
+				if v.Name == tag and v.ClassName == "Model" then
+					espadd(v.PrimaryPart, icon)
+				end
+			end
+			game.Workspace.ChildAdded:Connect(check)
+			game.Workspace.ChildRemoved:Connect(function(v)
+				pcall(function()
+					if espobjs[v.PrimaryPart] then
+						espobjs[v.PrimaryPart]:Destroy()
+						espobjs[v.PrimaryPart] = nil
+					end
+				end)
+			end)
+			for _, v in pairs(game.Workspace:GetChildren()) do
+				check(v)
+			end
+		end
+	end
+
+	local function recreateESP()
+		reset()
+		addKit("hidden-metal", "iron")
+		addKit("bee", "bee")
+		addKit("treeOrb", "natures_essence_1")
+		
+		addKit("Thorns", "thorns", true)
+		addKit("Mushrooms", "mushrooms", true)
+		addKit("Flower", "wild_flower", true)
+		addKit("CritStar", "crit_star", true)
+		addKit("VitalityStar", "vitality_star", true)
+		addKit("alchemy_crystal", "crystal")															
+		addKit("SheepModel", "sheep")															
+		addKit("ghost", "Ghost")	
+	end
+
+	KitESP = vape.Categories.Minigames:CreateModule({
+		Name = "KitESP",
+		Tooltip = "Specfic kits work for this module",
+		Function = function(callback)
+			if callback then
+				recreateESP()
+			else
+				reset()
+			end
+		end
+	})
+
+end)
+
+run(function()
     local ClientCrasher
     local Method
 
-    ClientCrasher = vape.Categories.Minigames:CreateModule({
+    ClientCrasher = vape.Categories.Exploits:CreateModule({
         Name = 'Client Crasher',
-		Tooltip = 'Client crasher\nPATCHED',
         Function = function(callback)
             if callback then
                 for _, v in getconnections(game:GetService("ReplicatedStorage"):WaitForChild("events-@easy-games/game-core:shared/game-core-networking@getEvents.Events"):WaitForChild("abilityUsed").OnClientEvent) do
@@ -8606,7 +8677,7 @@ run(function()
                         end
                     end
                     task.wait()
-                until not ClientCrasher.Toggle
+                until not ClientCrasher.Enabled
             end
         end
     })
@@ -8615,163 +8686,5 @@ run(function()
         Name = 'Method',
         List = {'Item', 'Ability'}
     })
-end) 			
-
-
-run(function()
-				local collectionService = game:GetService("CollectionService")
-				local debris = game:GetService("Debris")
-				local Icons = {
-				    ["iron"] = "rbxassetid://6850537969",
-				    ["bee"] = "rbxassetid://7343272839",
-				    ["natures_essence_1"] = "rbxassetid://88021177593377",
-				    ["thorns"] = "rbxassetid://9134549615",
-				    ["mushrooms"] = "rbxassetid://9134534696",
-				    ["wild_flower"] = "rbxassetid://9134545166",
-				    ["crit_star"] = "rbxassetid://9866757805",
-				    ["vitality_star"] = "rbxassetid://9866757969",
-				    ["sheep"] = "rbxassetid://78493823174512",
-				    ["crystal"] = "rbxassetid://94842987168294",
-				    ["Ghost"] = "rbxassetid://78249785309968",
-				}
-				local espobjs = {}
-				local espfold = Instance.new("Folder")
-				local gui = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer.PlayerGui)
-				gui.ResetOnSpawn = false
-				espfold.Parent = gui
-				
-				local hidden = false
-								
-				local function espadd(v, icon)
-				    local billboard = Instance.new("BillboardGui")
-				    billboard.Parent = espfold
-				    billboard.Name = "iron"
-				    billboard.StudsOffsetWorldSpace = Vector3.new(0, 3, 1.5)
-				    billboard.Size = UDim2.new(0, 32, 0, 32)
-				    billboard.AlwaysOnTop = true
-				    billboard.Adornee = v
-				    local image = Instance.new("ImageLabel")
-				    image.BackgroundTransparency = 0.5
-				    image.BorderSizePixel = 0
-				    image.Image = Icons[icon] or ""
-				    image.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-				    image.Size = UDim2.new(0, 32, 0, 32)
-				    image.AnchorPoint = Vector2.new(0.5, 0.5)
-				    image.Parent = billboard
-				    local uicorner = Instance.new("UICorner")
-				    uicorner.CornerRadius = UDim.new(0, 4)
-				    uicorner.Parent = image
-				    espobjs[v] = billboard
-				end
-				
-				local connections = {}
-				
-				local function reset()
-				    for _, v in pairs(connections) do
-				        pcall(function() v:Disconnect() end)
-				    end
-				    espfold:ClearAllChildren()
-				    table.clear(espobjs)
-				end
-				
-				local function addKit(tag, icon, custom)
-				    if not custom then
-				        local con1 = collectionService:GetInstanceAddedSignal(tag):Connect(function(v)
-				            espadd(v.PrimaryPart, icon)
-				        end)
-				        local con2 = collectionService:GetInstanceRemovedSignal(tag):Connect(function(v)
-				            if espobjs[v.PrimaryPart] then
-				                espobjs[v.PrimaryPart]:Destroy()
-				                espobjs[v.PrimaryPart] = nil
-				            end
-				        end)
-				        table.insert(connections, con1)
-				        table.insert(connections, con2)
-				        for _, v in pairs(collectionService:GetTagged(tag)) do
-				            espadd(v.PrimaryPart, icon)
-				        end
-				    else
-				        local function check(v)
-				            if v.Name == tag and v.ClassName == "Model" then
-				                espadd(v.PrimaryPart, icon)
-				            end
-				        end
-				        game.Workspace.ChildAdded:Connect(check)
-				        game.Workspace.ChildRemoved:Connect(function(v)
-				            pcall(function()
-				                if espobjs[v.PrimaryPart] then
-				                    espobjs[v.PrimaryPart]:Destroy()
-				                    espobjs[v.PrimaryPart] = nil
-				                end
-				            end)
-				        end)
-				        for _, v in pairs(game.Workspace:GetChildren()) do
-				            check(v)
-				        end
-				    end
-				end
-				
-				local function recreateESP()
-				    reset()
-				    addKit("hidden-metal", "iron")
-				    addKit("bee", "bee")
-				    addKit("treeOrb", "natures_essence_1")
-				    
-				    addKit("Thorns", "thorns", true)
-				    addKit("Mushrooms", "mushrooms", true)
-				    addKit("Flower", "wild_flower", true)
-				    addKit("CritStar", "crit_star", true)
-					addKit("VitalityStar", "vitality_star", true)
-					addKit("alchemy_crystal", "crystal")															
-					addKit("SheepModel", "sheep")															
-					addKit("ghost", "Ghost")															
-				end
-	KitESP = vape.Categories.Minigames:({
-		Name = 'Kit Esp',
-		Tooltip = 'Specific kits are needed for this module "Metal, Eldertree, Beekeeper Beatrix, Gompy, Alchemist, Star Collector Stella, Death Adder, Sheep Herder"',
-		Function = function(callback)
-			if callback then
-				recreateESP()
-			else 
-                reset()
-			end
-		end
-	})
-end)
-
-run(function()
-	local PlayerLevelSet = {}
-	local PlayerLevel = {Value = 1000}
-	PlayerLevelSet = vape.Categories.Minigames:({
-		Name = 'SetPlayerLevel',
-		ToolTip = 'Sets your player level to 1000 (client sided)',
-		Function = function(calling)
-			if calling then 
-				game.Players.LocalPlayer:SetAttribute("PlayerLevel", PlayerLevel.Value)
-			end
-		end
-	})
-	PlayerLevel = PlayerLevelSet.CreateSlider({
-		Name = 'Sets your desired player level',
-		Function = function() if PlayerLevelSet.Enabled then game.Players.LocalPlayer:SetAttribute("PlayerLevel", PlayerLevel.Value) end end,
-		Min = 1,
-		Max = 1000,
-		Default = 1000
-	})
-end)
-
-run(function()
-	local GetHost = {Enabled = false}
-	GetHost = vape.Categories.Minigames:({
-		Name = "GetHost",
-		Tooltip = "this module is only for show. None of the settings will work.",
-		Function = function(callback) 
-			if callback then
-				task.spawn(function()
-					game.Players.LocalPlayer:SetAttribute("CustomMatchRole", "host")
-				end)
-			end
-		end
-	})
-end)
+end) 
 
