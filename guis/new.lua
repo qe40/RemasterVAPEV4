@@ -12,7 +12,7 @@ local mainapi = {
 	Modules = {},
 	Place = game.PlaceId,
 	Profile = 'default',
-	Profiles = {},
+	Profiles = {'closet', 'fully'},
 	RainbowSpeed = {Value = 1},
 	RainbowUpdateSpeed = {Value = 60},
 	RainbowTable = {},
@@ -121,7 +121,7 @@ local getcustomassets = {
 	['ReVape/assets/new/utilityicon.png'] = 'rbxassetid://14368359107',
 	['ReVape/assets/new/vape.png'] = 'rbxassetid://14373395239',
 	['ReVape/assets/new/warning.png'] = 'rbxassetid://14368361552',
-	['ReVape/assets/new/worldicon.png'] = 'rbxassetid://14368362492'
+	['ReVape/assets/new/worldicon.png'] = 'rbxassetid://14368362492',
 }
 
 local isfile = isfile or function(file)
@@ -2527,7 +2527,6 @@ function mainapi:CreateGUI()
 	discordbutton.BackgroundTransparency = 1
 	discordbutton.Image = getcustomasset('ReVape/assets/new/discord.png')
 	discordbutton.Parent = window
-	discordbutton.Visible = false
 	addTooltip(discordbutton, 'Join discord')
 	local settingspane = Instance.new('TextButton')
 	settingspane.Size = UDim2.fromScale(1, 1)
@@ -5674,7 +5673,6 @@ local scarcitybanner = Instance.new('TextLabel')
 scarcitybanner.Size = UDim2.fromScale(1, 0.02)
 scarcitybanner.Position = UDim2.fromScale(0, 0.97)
 scarcitybanner.BackgroundTransparency = 1
-scarcitybanner.Visible = false
 scarcitybanner.Text = 'A new discord has been created, click the discord icon to join.'
 scarcitybanner.TextScaled = true
 scarcitybanner.TextColor3 = Color3.new(1, 1, 1)
@@ -5797,6 +5795,11 @@ mainapi:CreateCategory({
 mainapi:CreateCategory({
 	Name = 'Minigames',
 	Icon = getcustomasset('ReVape/assets/new/miniicon.png'),
+	Size = UDim2.fromOffset(19, 12)
+})
+mainapi:CreateCategory({
+	Name = 'Exploits',
+	Icon = getcustomasset('ReVape/assets/new/radaricon.png'),
 	Size = UDim2.fromOffset(19, 12)
 })
 mainapi.Categories.Main:CreateDivider('misc')
@@ -6044,7 +6047,7 @@ guipane:CreateDropdown({
 			end
 		end
 	end,
-	Tooltip = 'new - The newest vape theme to since v4.05\nold - The vape theme pre v4.05\nrise - Rise 6.0'
+	Tooltip = 'new - The newest vape theme'
 })
 mainapi.RainbowMode = guipane:CreateDropdown({
 	Name = 'Rainbow Mode',
@@ -6088,8 +6091,9 @@ guipane:CreateButton({
 			WorldCategory = 6,
 			InventoryCategory = 7,
 			MinigamesCategory = 8,
-			FriendsCategory = 9,
-			ProfilesCategory = 10
+			ExploitsCategory = 9,
+			FriendsCategory = 10,
+			ProfilesCategory = 11
 		}
 		local categories = {}
 		for _, v in mainapi.Categories do
